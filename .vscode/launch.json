@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-NameRouletteApplication<name_roulette>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "it.lessons.name_roulette.NameRouletteApplication",
+            "projectName": "name_roulette",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

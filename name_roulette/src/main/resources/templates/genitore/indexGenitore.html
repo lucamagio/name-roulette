@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{'/fragments/headFragment' :: head}">
+    <title>Home Scelta</title>
+</head>
+
+<body>
+    <header th:replace="~{'/fragments/headerFragment' :: header}"></header>
+
+    <div th:if="!${sceltaGenereFatta}" class="assetBody">
+        <main>
+            <h1>È il momento della scelta</h1>
+    
+            <form th:action="@{/genitore/home}" method="post">
+                <button type="submit" name="genere" value="maschio" class="btn btn-primary btn-choice">Maschio</button>
+                <button type="submit" name="genere" value="femmina" class="btn btn-pink btn-choice">Femmina</button>
+            </form>
+        </main>
+    </div>
+    <div th:if="${sceltaGenereFatta}" th:class="'assetBody ' + (${genere} == 'maschio' ? 'bg-maschio' : (${genere} == 'femmina' ? 'bg-femmina' : ''))">
+        <main>
+            <h1 th:if="${genere} == 'maschio'">Benvenuto nel mondo dei supereroi!</h1>
+            <h1 th:if="${genere} == 'femmina'">Benvenuta nel mondo delle principesse!</h1>
+
+            <form class="form-inline">
+                <div class="form-group mb-2">
+                  <label for="staticChose" class="sr-only">Chose Name</label>
+                  <input type="text" readonly class="form-control-plaintext" id="staticChose" value="Scegli il Nome">
+                </div>
+                <div class="form-group mb-2">
+                  <label for="choseName" class="sr-only">Name</label>
+                  <input type="text" class="form-control" id="choseName" placeholder="Scegli il Nome">
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Confirm</button>
+              </form>
+        </main>
+    </div>
+</body>
+</html>
+
+<style>
+    .assetBody {
+        background: linear-gradient(to right, #98c6f4, #f3a7ff);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .bg-maschio {
+        background: linear-gradient(to right, #009dff, #9ad7fd);
+    }
+
+    .bg-femmina {
+        background: linear-gradient(to right, #ff359a, #ffb8c4);
+    }
+
+    main {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 500px;
+        width: 100%;
+    }
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 30px;
+        color: #343a40;
+    }
+
+    .btn-choice {
+        width: 100%;
+        padding: 15px;
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        border-radius: 10px;
+    }
+
+    .btn-pink {
+        background-color: #ff69b4;
+        color: white;
+    }
+    .btn-pink:hover {
+        background-color: #ff85c1;
+        color: white;
+    }
+</style>

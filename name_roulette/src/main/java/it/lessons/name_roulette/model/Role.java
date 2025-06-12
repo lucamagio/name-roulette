@@ -19,7 +19,7 @@ public class Role {
     @NotBlank(message = "Inserisci un nome valido")
     private String name;
 
-    @OneToMany(mappedBy = "name")
+    @OneToMany(mappedBy = "username")
     private List<User> users;
 
     public List<User> getUsers() {

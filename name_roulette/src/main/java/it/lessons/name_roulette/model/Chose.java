@@ -10,7 +10,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-public class Choose {
+public class Chose {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +19,7 @@ public class Choose {
     @NotBlank(message = "Inserisci un nome valido")
     private String name;
 
-    @OneToMany(mappedBy = "name")
+    @OneToMany(mappedBy = "username")
     private List<User> user;
 
     public Integer getId() {

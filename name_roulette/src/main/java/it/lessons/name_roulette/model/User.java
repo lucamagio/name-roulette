@@ -1,10 +1,16 @@
 package it.lessons.name_roulette.model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 
@@ -24,22 +30,41 @@ public class User {
     @NotBlank(message = "Inserisci una password valida")
     private String password;
 
-    private Boolean gender;
+    private String gender;
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
     @ManyToOne
-    @JoinColumn(name = "choose_id", nullable = false)
-    private Choose choose;
+    @JsonBackReference
+    @JoinColumn(name = "chose_id", nullable = true)
+    private Chose chose;
 
-    public Choose getChoose() {
-        return choose;
+    @ManyToMany
+    @JoinTable(
+        name = "genitore_parenti",
+        joinColumns = @JoinColumn(name = "genitore_id"),
+        inverseJoinColumns = @JoinColumn(name = "parente_id")
+    )
+    private List<User> listaParenti;
+
+
+
+    public Chose getChose() {
+        return chose;
     }
 
-    public void setChoose(Choose choose) {
-        this.choose = choose;
+    public void setChose(Chose chose) {
+        this.chose = chose;
+    }
+
+    public List<User> getListaParenti() {
+        return listaParenti;
+    }
+
+    public void setListaParenti(List<User> listaParenti) {
+        this.listaParenti = listaParenti;
     }
 
     public Role getRole() {
@@ -82,11 +107,11 @@ public class User {
         this.password = password;
     }
 
-    public Boolean getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Boolean gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 }
