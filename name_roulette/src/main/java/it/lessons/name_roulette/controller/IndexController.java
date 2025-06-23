@@ -18,8 +18,10 @@ public class IndexController {
 
         if (auth.getAuthorities().contains(new SimpleGrantedAuthority("GENITORE"))) {
             return "redirect:/genitore/home";
-        } else {
+        } if (auth.getAuthorities().contains(new SimpleGrantedAuthority("PARENTE"))) {
             return "redirect:/parente/home";
+        } else {
+            return "redirect:/login";
         }
     }
 }

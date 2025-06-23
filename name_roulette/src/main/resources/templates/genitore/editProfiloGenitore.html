@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{'/fragments/headFragment' :: head}">
+    <title>Profilo Genitore</title>
+</head>
+<body>
+  <div class="page-container d-flex flex-column min-vh-100">
+
+    <header th:replace="~{'/fragments/headerFragment' :: header}"></header>
+
+    <main class="container mt-5 text-center flex-grow-1">
+       <div class="row" id="profilo">
+        <form id="user-form" th:object="${user}" th:action="@{|/genitore/editProfiloGenitore/${#authentication.principal.id}|}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+
+            <!-- Username -->
+            <div class="col-12 mt-3">
+                <label class="form-label" for="username"><h5>Username</h5></label>
+                <input type="text" th:field="*{username}" id="username" class="form-control" th:errorClass="is-invalid">
+                <ul class="list-unstyled" th:if="${#fields.hasErrors('username')}">
+                    <li th:each="err : ${#fields.errors('username')}" class="text-danger" th:text="${err}"></li>
+                </ul>                         
+            </div>
+        
+            <!-- Email -->
+            <div class="col-12 mt-3">
+                <label class="form-label" for="email"><h5>Email</h5></label>
+                <input type="text" th:field="*{email}" id="email" class="form-control" th:errorClass="is-invalid">
+                <ul class="list-unstyled" th:if="${#fields.hasErrors('email')}">
+                    <li th:each="err : ${#fields.errors('email')}" class="text-danger" th:text="${err}"></li>
+                </ul>                         
+            </div>
+        
+            <!-- Password -->
+            <div class="col-12 mt-3">
+                <label class="form-label" for="password"><h5>Password</h5></label>
+                <input type="text" th:field="*{password}" id="password" class="form-control" th:errorClass="is-invalid">
+                <ul class="list-unstyled" th:if="${#fields.hasErrors('password')}">
+                    <li th:each="err : ${#fields.errors('password')}" class="text-danger" th:text="${err}"></li>
+                </ul>                         
+            </div>
+
+            <div class="col-12 mt-3">
+                <label class="form-label" for="gender"><h5>Sesso Figlio</h5></label>
+                <select th:field="*{gender}" id="gender" class="form-control" th:errorClass="is-invalid">
+                    <option value="maschio">Maschio</option>
+                    <option value="femmina">Femmina</option>
+                </select>
+            </div>            
+        
+            <!-- Scelta Nome -->
+            <div class="col-12 mt-3">
+                <label class="form-label" for="chose"><h5>Scelta Nome</h5></label>
+                <input type="text" th:field="*{chose}" id="chose" class="form-control" th:errorClass="is-invalid">
+                <ul class="list-unstyled" th:if="${#fields.hasErrors('chose')}">
+                    <li th:each="err : ${#fields.errors('chose')}" class="text-danger" th:text="${err}"></li>
+                </ul>                         
+            </div>
+        
+            <!-- Bottone -->
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary">Aggiorna Profilo</button>
+            </div>
+        </form>
+        
+       </div>
+    </main>
+  </div>
+</body>
+</html>
+
+
+<style>
+    body {
+        background-image: 
+            url("data:image/svg+xml,%3Csvg width='100' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='white' opacity='0.5'%3E%3Cellipse cx='30' cy='30' rx='20' ry='15'/%3E%3Cellipse cx='50' cy='30' rx='15' ry='10'/%3E%3Cellipse cx='20' cy='30' rx='10' ry='8'/%3E%3C/g%3E%3C/svg%3E"),
+            linear-gradient(to bottom right, #ffc9f3, #aee5ff);
+        background-repeat: repeat;
+        background-size: 120px 80px, cover;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    #profilo {
+        font-family: Arial, sans-serif;
+        max-width: 400px;
+        margin: 40px auto;
+        padding: 20px;
+        background: linear-gradient(to bottom right, #aee5ff, #ffc9f3);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+    }
+</style>

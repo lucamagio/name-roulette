@@ -20,20 +20,22 @@
     </div>
     <div th:if="${sceltaGenereFatta}" th:class="'assetBody ' + (${genere} == 'maschio' ? 'bg-maschio' : (${genere} == 'femmina' ? 'bg-femmina' : ''))">
         <main>
-            <h1 th:if="${genere} == 'maschio'">Benvenuto nel mondo dei supereroi!</h1>
-            <h1 th:if="${genere} == 'femmina'">Benvenuta nel mondo delle principesse!</h1>
-
-            <form class="form-inline">
-                <div class="form-group mb-2">
-                  <label for="staticChose" class="sr-only">Chose Name</label>
-                  <input type="text" readonly class="form-control-plaintext" id="staticChose" value="Scegli il Nome">
-                </div>
-                <div class="form-group mb-2">
-                  <label for="choseName" class="sr-only">Name</label>
-                  <input type="text" class="form-control" id="choseName" placeholder="Scegli il Nome">
-                </div>
-                <button type="submit" class="btn btn-primary mb-2">Confirm</button>
-              </form>
+            <h1 th:if="${genere} == 'maschio'" th:text="'Benvenuto nel mondo dei supereroi ' + ${nameChose}"></h1>
+            <h1 th:if="${genere} == 'femmina'" th:text="'Benvenuta nel mondo delle principesse ' + ${nameChose}"></h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Scelta Nome</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="parente : ${listaParenti}">
+                        <td th:text="parente.username"></td>
+                        <td th:text="parente.chose"></td>
+                    </tr>
+                </tbody>
+            </table>
         </main>
     </div>
 </body>
