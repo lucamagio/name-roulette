@@ -19,25 +19,29 @@ public class UserService {
     private UserRepository userRepository;
 
     //Aggiungere Parenti alla lista
-    public User aggiungiParenteAllaLista(Integer genitoreId, Integer parenteId){
-
+    public User aggiungiParenteAllaLista(Integer genitoreId, String parenteUsername){
+        
         Optional<User> optGenitore = userRepository.findById(genitoreId);
-        Optional<User> optParente = userRepository.findById(parenteId);
-
+        Optional<User> optParente = userRepository.findByUsername(parenteUsername);
+    
         if (!optGenitore.isPresent()) {
-            throw new IllegalArgumentException("Genitore con ID " + genitoreId + " non trovato.");
+            throw new IllegalArgumentException("Genitore non trovato.");
         }
         if (!optParente.isPresent()) {
-            throw new IllegalArgumentException("Parente con ID " + parenteId + " non trovato.");
+            throw new IllegalArgumentException("Utente con username '" + parenteUsername + "' non trovato.");
         }
-
+    
         User genitore = optGenitore.get();
         User parente = optParente.get();
-
+    
         if (!"GENITORE".equals(genitore.getRole().getName())) {
-            throw new IllegalArgumentException("L'utente non è un Genitore");
+            throw new IllegalArgumentException("L'utente non è un genitore.");
         }
-
+    
+        if (genitore.getListaParenti().contains(parente)) {
+            throw new IllegalArgumentException("Questo utente è già nella tua lista.");
+        }
+    
         genitore.getListaParenti().add(parente);
         return userRepository.save(genitore);
     }

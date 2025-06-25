@@ -1,5 +1,7 @@
 package it.lessons.name_roulette.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -10,12 +12,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.lessons.name_roulette.model.User;
 import it.lessons.name_roulette.repository.UserRepository;
 import it.lessons.name_roulette.security.DatabaseUserDetails;
 import it.lessons.name_roulette.service.UserService;
-import jakarta.annotation.Generated;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +25,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-
 
 
 @Controller
@@ -127,5 +127,33 @@ public class GenitoreController {
         return "genitore/profiloGenitore";
     }
     
-       
+    @GetMapping("/listaParenti")
+    public String listaParenti(Model model) {
+
+        User user = userService.utenteAutenticato();
+
+        model.addAttribute("listaParenti", user.getListaParenti());
+        return "genitore/listaParenti";
+    }
+    
+    @PostMapping("/listaParenti")
+    public String listaParenti(@RequestParam("username") String username, RedirectAttributes redirectAttributes) {
+
+        User user = userService.utenteAutenticato();
+
+        if (username == null || username.trim().isEmpty()) {
+            redirectAttributes.addFlashAttribute("errore", "Inserisci un username valido.");
+            return "redirect:/genitore/listaParenti";
+        }
+
+        try {
+            userService.aggiungiParenteAllaLista(user.getId(), username.trim());
+            redirectAttributes.addFlashAttribute("successo", "Parente aggiunto con successo.");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errore", e.getMessage());
+        }
+
+        return "redirect:/genitore/listaParenti";
+    }
+    
 }

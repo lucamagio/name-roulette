@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{'/fragments/headFragment' :: head}">
+    <title>Lista Parenti</title>
+</head>
+<body>
+  <div class="page-container d-flex flex-column min-vh-100">
+
+    <header th:replace="~{'/fragments/headerFragment' :: header}"></header>
+
+    <main class="container mt-5 text-center flex-grow-1">
+       <div class="row" id="profilo">
+            <h2>Lista Parenti</h2>
+            <div class="container mt-5">
+                <div th:if="${errore}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <span th:text="${errore}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div th:if="${successo}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <span th:text="${successo}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <form th:action="@{/genitore/listaParenti}" method="post" class="d-flex">
+                    <input type="text" name="username" class="form-control me-2" placeholder="Inserisci un username">
+                    <button type="submit" class="btn btn-primary">Aggiungi</button>
+                </form>
+
+                <div class="d-flex flex-column align-items-start mt-5">
+                    <div class="mt-1" th:each="username : ${listaParenti}">
+                        <h5>-  <a href="#" th:text="${username.username}"></a></h5>
+                    </div>
+                </div>
+            </div>
+       </div>
+    </main>
+  </div>
+</body>
+</html>
+
+
+<style>
+    body {
+        background-image: 
+            url("data:image/svg+xml,%3Csvg width='100' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='white' opacity='0.5'%3E%3Cellipse cx='30' cy='30' rx='20' ry='15'/%3E%3Cellipse cx='50' cy='30' rx='15' ry='10'/%3E%3Cellipse cx='20' cy='30' rx='10' ry='8'/%3E%3C/g%3E%3C/svg%3E"),
+            linear-gradient(to bottom right, #ffc9f3, #aee5ff);
+        background-repeat: repeat;
+        background-size: 120px 80px, cover;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    #profilo {
+        font-family: Arial, sans-serif;
+        max-width: 400px;
+        margin: 40px auto;
+        padding: 20px;
+        background: linear-gradient(to bottom right, #aee5ff, #ffc9f3);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+    }
+</style>
