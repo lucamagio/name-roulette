@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import it.lessons.name_roulette.model.Chose;
 import it.lessons.name_roulette.model.User;
+import it.lessons.name_roulette.repository.ChoseRepository;
 import it.lessons.name_roulette.repository.UserRepository;
 import it.lessons.name_roulette.security.DatabaseUserDetails;
 import it.lessons.name_roulette.service.UserService;
@@ -36,6 +38,9 @@ public class GenitoreController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ChoseRepository choseRepository;
     
     @GetMapping("/home")
     public String indexGenitore(Model model, @RequestParam (name = "keyword", required = false) String keyword) {
@@ -48,12 +53,7 @@ public class GenitoreController {
             model.addAttribute("sceltaGenereFatta", true);
             model.addAttribute("genere", user.getGender());
             model.addAttribute("listaParenti", user.getListaParenti());
-            if (user.getChose() == null) {
-                model.addAttribute("nameChose", "");
-            }else{
-                model.addAttribute("nameChose", user.getChose());
-            }
-
+            model.addAttribute("nameChose", user.getChose());
         }
 
         return "genitore/indexGenitore";
@@ -69,8 +69,36 @@ public class GenitoreController {
         model.addAttribute("genere", genere);
         model.addAttribute("sceltaGenereFatta", true);
 
-        return "genitore/indexGenitore";
+        return "redirect:/genitore/indexGenitore";
     }
+
+    @PostMapping("/home/choseName")
+    public String sceltaNome(@RequestParam("nameChose") String nameChose, RedirectAttributes redirectAttributes, Model model) {
+
+        User user = userService.utenteAutenticato();
+
+        if (nameChose == null || nameChose.trim().isEmpty()) {
+            redirectAttributes.addFlashAttribute("errore", "Inserisci un nome valido.");
+            return "redirect:/genitore/home";
+        }
+
+        try {
+            Chose chose = new Chose();
+            chose.setName(nameChose);
+            choseRepository.save(chose);
+
+            user.setChose(chose);
+            userRepository.save(user);
+
+            model.addAttribute("nameChose", chose);
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errore", e.getMessage());
+        }
+
+        return "redirect:/genitore/home";
+    }
+
+    
     
     @GetMapping("/profiloGenitore/{id}")
     public String profiloGenitore(@PathVariable ("id") Integer id, Model model) {

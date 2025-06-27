@@ -37,6 +37,10 @@ public class UserService {
         if (!"GENITORE".equals(genitore.getRole().getName())) {
             throw new IllegalArgumentException("L'utente non è un genitore.");
         }
+
+        if (!"PARENTE".equals(parente.getRole().getName())) {
+            throw new IllegalArgumentException("L'utente non è un parente.");
+        }
     
         if (genitore.getListaParenti().contains(parente)) {
             throw new IllegalArgumentException("Questo utente è già nella tua lista.");

@@ -20,8 +20,24 @@
     </div>
     <div th:if="${sceltaGenereFatta}" th:class="'assetBody ' + (${genere} == 'maschio' ? 'bg-maschio' : (${genere} == 'femmina' ? 'bg-femmina' : ''))">
         <main>
-            <h1 th:if="${genere} == 'maschio'" th:text="'Benvenuto nel mondo dei supereroi ' + ${nameChose}"></h1>
-            <h1 th:if="${genere} == 'femmina'" th:text="'Benvenuta nel mondo delle principesse ' + ${nameChose}"></h1>
+            <div th:if="${nameChose} == null">
+                <h1 th:if="${genere} == 'maschio'">Benvenuto nel mondo dei supereroi ...</h1>
+                <h1 th:if="${genere} == 'femmina'">Benvenuta nel mondo delle principesse ...</h1>
+                <div>
+                    <div th:if="${errore}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <span th:text="${errore}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <form th:action="@{/genitore/home/choseName}" method="post" class="d-flex mb-5">
+                        <input type="text" name="nameChose" class="form-control me-2" placeholder="Inserisci un Nome">
+                        <button type="submit" class="btn btn-primary">Aggiungi</button>
+                    </form>
+                </div>
+            </div>
+            <div th:if="${nameChose} != null">
+                <h1 th:if="${genere} == 'maschio'" th:text="'Benvenuto nel mondo dei supereroi ' + ${nameChose.name}"></h1>
+                <h1 th:if="${genere} == 'femmina'" th:text="'Benvenuta nel mondo delle principesse ' + ${nameChose.name}"></h1>
+            </div>
             <table class="table table-striped">
                 <thead>
                     <tr>
