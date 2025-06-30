@@ -37,6 +37,11 @@
             <div th:if="${nameChose} != null">
                 <h1 th:if="${genere} == 'maschio'" th:text="'Benvenuto nel mondo dei supereroi ' + ${nameChose.name}"></h1>
                 <h1 th:if="${genere} == 'femmina'" th:text="'Benvenuta nel mondo delle principesse ' + ${nameChose.name}"></h1>
+                <div>
+                    <form th:action="@{/genitore/home/unveiledName}" method="post" class="text-center mb-5">
+                        <button type="submit" class="btn btn-primary" onclick="return confirm('Sei sicuro?')">Rivela Nome</button>
+                    </form>
+                </div>
             </div>
             <table class="table table-striped">
                 <thead>

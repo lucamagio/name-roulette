@@ -25,7 +25,8 @@
             </div>
             <div class="col-12 mt-3">
                 <label class="form-label mb-1"><h5>Scelta Nome</h5></label>
-                <p th:text="${user.chose.name}"></p>                          
+                <p th:if="${user.chose != null and user.chose.name != null}" th:text="${user.chose.name}"></p>
+                <p th:if="${user.chose == null or user.chose.name == null}"></p>                   
             </div>
             <div class="text-center">
                 <a th:href="@{|/genitore/editProfiloGenitore/${#authentication.principal.id}|}" class="btn btn-primary mt-3"><i class="fas fa-pencil"></i></a>

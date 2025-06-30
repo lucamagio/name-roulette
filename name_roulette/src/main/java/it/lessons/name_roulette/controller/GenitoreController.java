@@ -1,6 +1,7 @@
 package it.lessons.name_roulette.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +20,7 @@ import it.lessons.name_roulette.model.User;
 import it.lessons.name_roulette.repository.ChoseRepository;
 import it.lessons.name_roulette.repository.UserRepository;
 import it.lessons.name_roulette.security.DatabaseUserDetails;
+import it.lessons.name_roulette.service.ChoseService;
 import it.lessons.name_roulette.service.UserService;
 import jakarta.validation.Valid;
 
@@ -41,6 +43,9 @@ public class GenitoreController {
 
     @Autowired
     private ChoseRepository choseRepository;
+
+    @Autowired
+    private ChoseService choseService;
     
     @GetMapping("/home")
     public String indexGenitore(Model model, @RequestParam (name = "keyword", required = false) String keyword) {
@@ -59,6 +64,7 @@ public class GenitoreController {
         return "genitore/indexGenitore";
     }
 
+    //Scelta Genere
     @PostMapping("/home")
     public String sceltaGenereGenitore(@RequestParam("genere") String genere, Model model) {
 
@@ -72,6 +78,7 @@ public class GenitoreController {
         return "redirect:/genitore/indexGenitore";
     }
 
+    //Scelta nome
     @PostMapping("/home/choseName")
     public String sceltaNome(@RequestParam("nameChose") String nameChose, RedirectAttributes redirectAttributes, Model model) {
 
@@ -82,15 +89,15 @@ public class GenitoreController {
             return "redirect:/genitore/home";
         }
 
-        try {
-            Chose chose = new Chose();
-            chose.setName(nameChose);
-            choseRepository.save(chose);
+        try {        
 
+            Chose chose = choseService.assegnazioneChose(nameChose);
+            
             user.setChose(chose);
             userRepository.save(user);
-
+    
             model.addAttribute("nameChose", chose);
+
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("errore", e.getMessage());
         }
@@ -98,6 +105,15 @@ public class GenitoreController {
         return "redirect:/genitore/home";
     }
 
+    //TODO
+    //Svela nome
+    @PostMapping("/home/unveiledName")
+    public String svelaNome(Model model) {
+        
+        //Rivelazione nome alla lista dei parenti
+        
+        return "entity";
+    }
     
     
     @GetMapping("/profiloGenitore/{id}")
@@ -121,7 +137,7 @@ public class GenitoreController {
     }
     
     @PostMapping("/editProfiloGenitore/{id}")
-    public String editProfiloGenitore(@Valid @ModelAttribute("user") User formUser, BindingResult bindingResult, Model model) {
+    public String editProfiloGenitore(@Valid @ModelAttribute("user") User formUser, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         
         if (bindingResult.hasErrors()) {
             model.addAttribute("user", formUser);
@@ -132,7 +148,16 @@ public class GenitoreController {
         User existingUser = userRepository.findById(formUser.getId()).get();
         formUser.setRole(existingUser.getRole());
 
-        userRepository.save(formUser);
+        try {        
+
+        //Settaggio della nuova chose per l'utente
+        Chose updatChose = choseService.aggiornamentoChose(existingUser.getChose(), formUser.getChose());
+
+        formUser.setChose(updatChose);
+
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errore", e.getMessage());
+        }
 
         //Aggiornamento delle autorizzazioni dell'utente dopo la modifica del profilo
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

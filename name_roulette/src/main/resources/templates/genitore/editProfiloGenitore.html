@@ -51,7 +51,7 @@
             <!-- Scelta Nome -->
             <div class="col-12 mt-3">
                 <label class="form-label" for="chose"><h5>Scelta Nome</h5></label>
-                <input type="text" th:field="*{chose}" id="chose" class="form-control" th:errorClass="is-invalid">
+                <input type="text" th:field="*{chose.name}" id="chose" class="form-control" th:errorClass="is-invalid">
                 <ul class="list-unstyled" th:if="${#fields.hasErrors('chose')}">
                     <li th:each="err : ${#fields.errors('chose')}" class="text-danger" th:text="${err}"></li>
                 </ul>                         

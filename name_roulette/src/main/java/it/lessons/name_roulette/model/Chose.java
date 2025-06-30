@@ -2,6 +2,7 @@ package it.lessons.name_roulette.model;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +18,7 @@ public class Chose {
     private Integer id;
 
     @NotBlank(message = "Inserisci un nome valido")
+    @Column(unique = true)
     private String name;
 
     @OneToMany(mappedBy = "username")
