@@ -2,44 +2,31 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{'/fragments/headFragment' :: head}">
-    <title>Home Genitore</title>
+    <title>Home Parente</title>
 </head>
 
 <body>
-    <header th:replace="~{'/fragments/headerGenitoreFragment' :: header}"></header>
+    <header th:replace="~{'/fragments/headerParenteFragment' :: header}"></header>
 
-    <div th:if="!${sceltaGenereFatta}" class="assetBody">
+    <div th:if="${parenteAssociato == false}" class="assetBody">
         <main>
-            <h1>È il momento della scelta</h1>
-    
-            <form th:action="@{/genitore/home}" method="post">
-                <button type="submit" name="genere" value="maschio" class="btn btn-primary btn-choice">Maschio</button>
-                <button type="submit" name="genere" value="femmina" class="btn btn-pink btn-choice">Femmina</button>
-            </form>
+            <h1>nessuna associazione</h1>
         </main>
     </div>
-    <div th:if="${sceltaGenereFatta}" th:class="'assetBody ' + (${genere} == 'maschio' ? 'bg-maschio' : (${genere} == 'femmina' ? 'bg-femmina' : ''))">
+
+    <div th:if="${parenteAssociato == true}" th:class="'assetBody ' + (${genitore.gender} == 'maschio' ? 'bg-maschio' : (${genitore.gender} == 'femmina' ? 'bg-femmina' : ''))">
         <main>
-            <div th:if="${nameChose} == null">
-                <h1 th:if="${genere} == 'maschio'">Benvenuto nel mondo dei supereroi ...</h1>
-                <h1 th:if="${genere} == 'femmina'">Benvenuta nel mondo delle principesse ...</h1>
-                <div>
+            <h1 th:text="'Benvenuto nella Name Roulette di ' + ${genitore.username}"></h1>
+            <div th:if="${nameChose == null}">
+                <h5>E il momento che tu faccia la tua scelta</h5>
+                <div class="mt-4 mb-4">
                     <div th:if="${errore}" class="alert alert-danger alert-dismissible fade show" role="alert">
                         <span th:text="${errore}"></span>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                    <form th:action="@{/genitore/home/choseName}" method="post" class="d-flex mb-5">
+                    <form th:action="@{/parente/home/choseName}" method="post" class="d-flex mb-5">
                         <input type="text" name="nameChose" class="form-control me-2" placeholder="Inserisci un Nome">
                         <button type="submit" class="btn btn-primary">Aggiungi</button>
-                    </form>
-                </div>
-            </div>
-            <div th:if="${nameChose} != null">
-                <h1 th:if="${genere} == 'maschio'" th:text="'Benvenuto nel mondo dei supereroi ' + ${nameChose.name}"></h1>
-                <h1 th:if="${genere} == 'femmina'" th:text="'Benvenuta nel mondo delle principesse ' + ${nameChose.name}"></h1>
-                <div>
-                    <form th:action="@{/genitore/home/unveiledName}" method="post" class="text-center mb-5">
-                        <button type="submit" class="btn btn-primary" onclick="return confirm('Sei sicuro?')">Rivela Nome</button>
                     </form>
                 </div>
             </div>
@@ -51,9 +38,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="parente : ${listaParenti}">
+                    <tr th:each="parente : ${genitore.listaParenti}">
                         <td th:text="${parente.username}"></td>
-                        <td th:text="${parente.chose}"></td>
+                        <td th:text="${parente.chose.name}"></td>
                     </tr>
                 </tbody>
             </table>
@@ -86,7 +73,7 @@
         border-radius: 20px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         text-align: center;
-        max-width: 500px;
+        max-width: 600px;
         width: 100%;
     }
 

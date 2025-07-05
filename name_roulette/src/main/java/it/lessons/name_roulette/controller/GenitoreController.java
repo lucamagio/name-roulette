@@ -50,15 +50,15 @@ public class GenitoreController {
     @GetMapping("/home")
     public String indexGenitore(Model model, @RequestParam (name = "keyword", required = false) String keyword) {
         
-        User user = userService.utenteAutenticato();
+        User genitore = userService.utenteAutenticato();
 
-        if (user.getGender() == null) {
+        if (genitore.getGender() == null) {
             model.addAttribute("sceltaGenereFatta", false);
         } else{
             model.addAttribute("sceltaGenereFatta", true);
-            model.addAttribute("genere", user.getGender());
-            model.addAttribute("listaParenti", user.getListaParenti());
-            model.addAttribute("nameChose", user.getChose());
+            model.addAttribute("genere", genitore.getGender());
+            model.addAttribute("listaParenti", genitore.getListaParenti());
+            model.addAttribute("nameChose", genitore.getChose());
         }
 
         return "genitore/indexGenitore";
