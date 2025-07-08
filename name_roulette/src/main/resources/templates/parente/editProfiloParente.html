@@ -1,16 +1,16 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{'/fragments/headFragment' :: head}">
-    <title>Edit Profilo Genitore</title>
+    <title>Edit Profilo Parente</title>
 </head>
 <body>
   <div class="page-container d-flex flex-column min-vh-100">
 
-    <header th:replace="~{'/fragments/headerGenitoreFragment' :: header}"></header>
+    <header th:replace="~{'/fragments/headerParenteFragment' :: header}"></header>
 
     <main class="container mt-5 text-center flex-grow-1">
        <div class="row" id="profilo">
-        <form id="user-form" th:object="${user}" th:action="@{|/genitore/editProfiloGenitore/${#authentication.principal.id}|}" method="post">
+        <form id="user-form" th:object="${user}" th:action="@{|/parente/editProfiloParente/${#authentication.principal.id}|}" method="post">
             <input type="hidden" th:field="*{id}"/>
 
             <!-- Username -->
@@ -38,15 +38,7 @@
                 <ul class="list-unstyled" th:if="${#fields.hasErrors('password')}">
                     <li th:each="err : ${#fields.errors('password')}" class="text-danger" th:text="${err}"></li>
                 </ul>                         
-            </div>
-
-            <div class="col-12 mt-3">
-                <label class="form-label" for="gender"><h5>Sesso Figlio</h5></label>
-                <select th:field="*{gender}" id="gender" class="form-control" th:errorClass="is-invalid">
-                    <option value="maschio">Maschio</option>
-                    <option value="femmina">Femmina</option>
-                </select>
-            </div>            
+            </div>          
         
             <!-- Scelta Nome -->
             <div class="col-12 mt-3">

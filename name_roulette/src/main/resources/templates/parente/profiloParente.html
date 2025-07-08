@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{'/fragments/headFragment' :: head}">
+    <title>Profilo Parente</title>
+</head>
+<body>
+  <div class="page-container d-flex flex-column min-vh-100">
+
+    <header th:replace="~{'/fragments/headerParenteFragment' :: header}"></header>
+
+    <main class="container mt-5 text-center flex-grow-1">
+       <div class="row" id="profilo">
+            <h2 th:text="'Benvenuto ' + ${user.username}"></h2>
+            <div class="col-12 mt-3">
+                <label class="form-label mb-1"><h5>Email</h5></label>
+                <p th:text="${user.email}"></p>                          
+            </div>
+            <div class="col-12 mt-3">
+                <label class="form-label mb-1"><h5>Password</h5></label>
+                <p>*************</p>                          
+            </div>
+            <div class="col-12 mt-3">
+                <label class="form-label mb-1"><h5>Scelta Nome</h5></label>
+                <p th:if="${user.chose != null and user.chose.name != null}" th:text="${user.chose.name}"></p>
+                <p th:if="${user.chose == null or user.chose.name == null}"></p>                   
+            </div>
+            <div class="text-center">
+                <a th:href="@{|/parente/editProfiloParente/${#authentication.principal.id}|}" class="btn btn-primary mt-3"><i class="fas fa-pencil"></i></a>
+            </div>
+       </div>
+    </main>
+  </div>
+</body>
+</html>
+
+
+<style>
+    body {
+        background-image: 
+            url("data:image/svg+xml,%3Csvg width='100' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='white' opacity='0.5'%3E%3Cellipse cx='30' cy='30' rx='20' ry='15'/%3E%3Cellipse cx='50' cy='30' rx='15' ry='10'/%3E%3Cellipse cx='20' cy='30' rx='10' ry='8'/%3E%3C/g%3E%3C/svg%3E"),
+            linear-gradient(to bottom right, #ffc9f3, #aee5ff);
+        background-repeat: repeat;
+        background-size: 120px 80px, cover;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    #profilo {
+        font-family: Arial, sans-serif;
+        max-width: 400px;
+        margin: 40px auto;
+        padding: 20px;
+        background: linear-gradient(to bottom right, #aee5ff, #ffc9f3);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+    }
+</style>

@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @Controller
 @RequestMapping("/parente")
@@ -79,18 +81,18 @@ public class ParenteController {
         return "parente/indexParente";
     }
     
-     //Scelta nome
-     @PostMapping("/home/choseName")
-     public String sceltaNome(@RequestParam("nameChose") String nameChose, RedirectAttributes redirectAttributes, Model model) {
+    //Scelta nome
+    @PostMapping("/home/choseName")
+    public String sceltaNome(@RequestParam("nameChose") String nameChose, RedirectAttributes redirectAttributes, Model model) {
  
-         User user = userService.utenteAutenticato();
+        User user = userService.utenteAutenticato();
  
-         if (nameChose == null || nameChose.trim().isEmpty()) {
+        if (nameChose == null || nameChose.trim().isEmpty()) {
             redirectAttributes.addFlashAttribute("errore", "Inserisci un nome valido.");
             return "redirect:/genitore/home";
-         }
+        }
  
-         try {        
+        try {        
  
             Chose chose = choseService.assegnazioneChose(nameChose);
              
@@ -99,11 +101,78 @@ public class ParenteController {
      
             model.addAttribute("nameChose", chose);
  
-         } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("errore", e.getMessage());
-         }
+        }
  
-         return "redirect:/parente/home";
-     }
+        return "redirect:/parente/home";
+    }
 
+    //Profilo
+    @GetMapping("/profiloParente/{id}")
+    public String profiloParente(@PathVariable("id") Integer id, Model model) {
+
+        User user = userService.utenteAutenticato();
+
+        model.addAttribute("user", user);
+
+        return "parente/profiloParente";
+    }
+
+    //Edit Profilo
+    @GetMapping("/editProfiloParente/{id}")
+    public String editProfiloParente(@PathVariable("id") Integer id, Model model) {
+
+        User user = userService.utenteAutenticato();
+
+        model.addAttribute("user", user);
+
+        return "parente/editProfiloParente";
+    }
+    
+    @PostMapping("/editProfiloParente/{id}")
+    public String editProfiloParente(@Valid @ModelAttribute("user") User formUser, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+        
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", formUser);
+
+            return "parente/editProfiloParente";
+        }
+
+        //Risettaggio ruolo dello user
+        User exiUser = userRepository.findById(formUser.getId()).get();
+        formUser.setRole(exiUser.getRole());
+
+        try {        
+
+            //Settaggio della nuova chose per l'utente
+            Chose updatChose = choseService.aggiornamentoChose(exiUser.getChose(), formUser.getChose());
+    
+            formUser.setChose(updatChose);
+    
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("errore", e.getMessage());
+        }
+
+        //Aggiornamento delle autorizzazioni dell'utente dopo la modifica del profilo
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth != null && auth.getName().equals(formUser.getUsername())) {
+        
+            UserDetails updatedUserDetails = new DatabaseUserDetails(formUser);
+        
+            Authentication newAuth = new UsernamePasswordAuthenticationToken(
+                updatedUserDetails, 
+                updatedUserDetails.getPassword(), 
+                updatedUserDetails.getAuthorities()
+            );
+        
+            SecurityContextHolder.getContext().setAuthentication(newAuth);
+        }
+        
+        userRepository.save(formUser);
+
+        return "parente/profiloParente";
+    }
+    
 }

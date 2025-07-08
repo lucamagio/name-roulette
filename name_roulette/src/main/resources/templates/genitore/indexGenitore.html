@@ -53,7 +53,7 @@
                 <tbody>
                     <tr th:each="parente : ${listaParenti}">
                         <td th:text="${parente.username}"></td>
-                        <td th:text="${parente.chose}"></td>
+                        <td th:text="${parente.chose.name}"></td>
                     </tr>
                 </tbody>
             </table>

@@ -27,8 +27,12 @@
                 </form>
 
                 <div class="d-flex flex-column align-items-start mt-5">
-                    <div class="mt-1" th:each="username : ${listaParenti}">
-                        <h5>-  <a href="#" th:text="${username.username}"></a></h5>
+                    <div class="mt-1">
+                        <ul th:each="username : ${listaParenti}">
+                            <li>
+                                <h5 th:text="${username.username}"></h5>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

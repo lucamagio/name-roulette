@@ -45,6 +45,31 @@ public class UserService {
         if (genitore.getListaParenti().contains(parente)) {
             throw new IllegalArgumentException("Questo utente è già nella tua lista.");
         }
+
+        List<User> listaGenitori = userRepository.findByRoleName("GENITORE");
+        boolean parenteAssociato = false;
+        User genitoreAssociato;
+
+        for (User userGenitore : listaGenitori) {
+
+            List<User> listaParenti = userGenitore.getListaParenti();
+            if (listaParenti != null) {
+                for (User user : listaParenti) {
+                    if (user.getId().equals(parente.getId())) {
+                        parenteAssociato = true;
+                        genitoreAssociato = userGenitore;
+                        break;
+                    }
+                }
+            }
+            if (parenteAssociato) {
+                break;
+            }
+        }
+
+        if (parenteAssociato == true) {
+            throw new IllegalArgumentException("Questo utente è già presente in un'altra lista.");
+        }
     
         genitore.getListaParenti().add(parente);
         return userRepository.save(genitore);
