@@ -10,7 +10,7 @@
 
     <div th:if="${parenteAssociato == false}" class="assetBody">
         <main>
-            <h1>nessuna associazione</h1>
+            <h1>Attualmente non sei in nessuna lista!</h1>
         </main>
     </div>
 
@@ -30,20 +30,43 @@
                     </form>
                 </div>
             </div>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Username</th>
-                        <th>Scelta Nome</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="parente : ${genitore.listaParenti}">
-                        <td th:text="${parente.username}"></td>
-                        <td th:text="${parente.chose.name}"></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div th:if="${genitore.chose.reveal == false}">
+                <h2 th:if="${genitore.gender} == 'maschio'" th:text="'Benvenuto nel mondo dei supereroi ???'"></h2>
+                <h2 th:if="${genitore.gender} == 'femmina'" th:text="'Benvenuta nel mondo delle principesse ???'"></h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Scelta Nome</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="parente : ${genitore.listaParenti}">
+                            <td th:text="${parente.username}"></td>
+                            <td th:if="${parente.chose} == null"></td>
+                            <td th:if="${parente.chose} != null" th:text="${parente.chose.name}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div th:if="${genitore.chose.reveal == true}">
+                <h2 th:text="'I miei fantastici genitori hanno deciso di chiamarmi ' + ${genitore.chose.name}"></h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Scelta Nome</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="parente : ${genitore.listaParenti}">
+                            <td th:text="${parente.username}"></td>
+                            <td th:if="${parente.chose} == ${genitore.chose}" th:text="${parente.chose.name}" class="text-success"></td>
+                            <td th:if="${parente.chose} != ${genitore.chose}" th:text="${parente.chose.name}" class="text-danger"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </main>
     </div>
 </body>

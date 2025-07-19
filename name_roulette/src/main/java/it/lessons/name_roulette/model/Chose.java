@@ -17,8 +17,9 @@ public class Chose {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private Boolean reveal = false;
+
     @NotBlank(message = "Inserisci un nome valido")
-    @Column(unique = true)
     private String name;
 
     @OneToMany(mappedBy = "username")
@@ -48,5 +49,11 @@ public class Chose {
         this.user = user;
     }
 
-    
+    public Boolean getReveal() {
+        return reveal;
+    }
+
+    public void setReveal(Boolean reveal) {
+        this.reveal = reveal;
+    }
 }

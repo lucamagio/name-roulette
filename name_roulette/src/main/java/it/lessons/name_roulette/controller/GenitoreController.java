@@ -51,6 +51,8 @@ public class GenitoreController {
     public String indexGenitore(Model model, @RequestParam (name = "keyword", required = false) String keyword) {
         
         User genitore = userService.utenteAutenticato();
+        
+        model.addAttribute("genitore", genitore);
 
         if (genitore.getGender() == null) {
             model.addAttribute("sceltaGenereFatta", false);
@@ -75,7 +77,7 @@ public class GenitoreController {
         model.addAttribute("genere", genere);
         model.addAttribute("sceltaGenereFatta", true);
 
-        return "redirect:/genitore/indexGenitore";
+        return "redirect:/genitore/home";
     }
 
     //Scelta nome
@@ -105,14 +107,22 @@ public class GenitoreController {
         return "redirect:/genitore/home";
     }
 
-    //TODO
     //Svela nome
-    @PostMapping("/home/unveiledName")
-    public String svelaNome(Model model) {
+    @PostMapping("/home/rivelaNome")
+    public String svelaNome() {
+
+        User user = userService.utenteAutenticato();
         
-        //Rivelazione nome alla lista dei parenti
+        if (user.getChose() != null) {
+            
+            Chose chose = user.getChose();
+            chose.setReveal(true);
+            choseRepository.save(chose); 
+        }
+
+        userRepository.save(user);
         
-        return "entity";
+        return "redirect:/genitore/home";
     }
     
     
@@ -147,6 +157,7 @@ public class GenitoreController {
         //Risettaggio del ruolo nello user
         User existingUser = userRepository.findById(formUser.getId()).get();
         formUser.setRole(existingUser.getRole());
+        formUser.setListaParenti(existingUser.getListaParenti());
 
         try {        
 
