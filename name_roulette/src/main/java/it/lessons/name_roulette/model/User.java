@@ -32,6 +32,8 @@ public class User {
 
     private String gender;
 
+    private Boolean reveal = false;
+
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
@@ -113,5 +115,13 @@ public class User {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public Boolean getReveal() {
+        return reveal;
+    }
+
+    public void setReveal(Boolean reveal) {
+        this.reveal = reveal;
     }
 }

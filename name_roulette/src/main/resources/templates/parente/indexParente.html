@@ -30,7 +30,7 @@
                     </form>
                 </div>
             </div>
-            <div th:if="${genitore.chose.reveal == false}">
+            <div th:if="!genitore.reveal">
                 <h2 th:if="${genitore.gender} == 'maschio'" th:text="'Benvenuto nel mondo dei supereroi ???'"></h2>
                 <h2 th:if="${genitore.gender} == 'femmina'" th:text="'Benvenuta nel mondo delle principesse ???'"></h2>
                 <table class="table table-striped">
@@ -49,7 +49,7 @@
                     </tbody>
                 </table>
             </div>
-            <div th:if="${genitore.chose.reveal == true}">
+            <div th:if="genitore.reveal">
                 <h2 th:text="'I miei fantastici genitori hanno deciso di chiamarmi ' + ${genitore.chose.name}"></h2>
                 <table class="table table-striped">
                     <thead>

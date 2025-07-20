@@ -37,13 +37,13 @@
             <div th:if="${nameChose} != null">
                 <h1 th:if="${genere} == 'maschio'" th:text="'Benvenuto nel mondo dei supereroi ' + ${nameChose.name}"></h1>
                 <h1 th:if="${genere} == 'femmina'" th:text="'Benvenuta nel mondo delle principesse ' + ${nameChose.name}"></h1>
-                <div  th:if="!nameChose.reveal">
+                <div  th:if="!genitore.reveal">
                     <form th:action="@{/genitore/home/rivelaNome}" method="post" class="text-center mb-5">
                         <input type="hidden" name="id" th:value="${genitore.id}" />
                         <button type="submit" class="btn btn-primary" onclick="return confirm('Sei sicuro?')">Rivela Nome</button>
                     </form>
                 </div>
-                <div th:if="nameChose.reveal"></div>
+                <div th:if="genitore.reveal"></div>
                 <table class="table table-striped">
                     <thead>
                         <tr>

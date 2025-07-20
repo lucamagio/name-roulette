@@ -113,12 +113,7 @@ public class GenitoreController {
 
         User user = userService.utenteAutenticato();
         
-        if (user.getChose() != null) {
-            
-            Chose chose = user.getChose();
-            chose.setReveal(true);
-            choseRepository.save(chose); 
-        }
+        user.setReveal(true);
 
         userRepository.save(user);
         
