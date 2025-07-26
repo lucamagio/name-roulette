@@ -18,8 +18,8 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests()
                 .requestMatchers("/genitore", "/genitore/**").hasAuthority("GENITORE")
                 .requestMatchers(HttpMethod.POST, "/genitore/**").hasAuthority("GENITORE")
-                .requestMatchers("/**").permitAll()
-                .and().formLogin()
+                .anyRequest().permitAll()
+                .and().formLogin().loginPage("/").loginProcessingUrl("/login").permitAll()
                 .and().logout()
                 .and().exceptionHandling()
                 .and().csrf().disable();
