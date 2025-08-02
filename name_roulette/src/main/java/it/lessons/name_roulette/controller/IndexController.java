@@ -79,8 +79,22 @@ public class IndexController {
     }
 
     @PostMapping("/registrati")
-    public String postRegistrazione(@ModelAttribute User user) {
+    public String postRegistrazione(@ModelAttribute User user, Model model) {
 
+        // Controlla se email esiste
+        if(userRepository.findByEmail(user.getEmail()).isPresent()) {
+            model.addAttribute("error", "Email già registrata");
+            model.addAttribute("role", roleRepository.findAll());
+            return "registrazione";
+        }
+
+        //Controlla se l'username esiste
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            model.addAttribute("error", "Username già registrato");
+            model.addAttribute("role", roleRepository.findAll());
+            return "registrazione";
+        }
+        
         //Ricerco il ruolo da salvare e lo setto nello user
         Integer roleId = user.getRole().getId();
         Role fullRole = roleRepository.findById(roleId).get();

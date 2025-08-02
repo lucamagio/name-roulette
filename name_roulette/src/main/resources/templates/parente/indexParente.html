@@ -14,7 +14,7 @@
         </main>
     </div>
 
-    <div th:if="${parenteAssociato == true}" th:class="'assetBody ' + (${genitore.gender} == 'maschio' ? 'bg-maschio' : (${genitore.gender} == 'femmina' ? 'bg-femmina' : ''))">
+    <div th:if="${parenteAssociato == true}" th:class="'assetBody ' + (${genitore.gender == 'maschio'} ? 'bg-maschio' : (${genitore.gender == 'femmina'} ? 'bg-femmina' : ''))">
         <main>
             <h1 th:text="'Benvenuto nella Name Roulette di ' + ${genitore.username}"></h1>
             <div th:if="${nameChose == null}">
@@ -30,7 +30,7 @@
                     </form>
                 </div>
             </div>
-            <div th:if="!genitore.reveal">
+            <div th:if="${!genitore.reveal}">
                 <h2 th:if="${genitore.gender} == 'maschio'" th:text="'Benvenuto nel mondo dei supereroi ???'"></h2>
                 <h2 th:if="${genitore.gender} == 'femmina'" th:text="'Benvenuta nel mondo delle principesse ???'"></h2>
                 <table class="table table-striped">
@@ -43,13 +43,13 @@
                     <tbody>
                         <tr th:each="parente : ${genitore.listaParenti}">
                             <td th:text="${parente.username}"></td>
-                            <td th:if="${parente.chose} == null"></td>
-                            <td th:if="${parente.chose} != null" th:text="${parente.chose.name}"></td>
+                            <td th:if="${parente.chose == null}"></td>
+                            <td th:if="${parente.chose != null}" th:text="${parente.chose.name}"></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div th:if="genitore.reveal">
+            <div th:if="${genitore.reveal}">
                 <h2 th:text="'I miei fantastici genitori hanno deciso di chiamarmi ' + ${genitore.chose.name}"></h2>
                 <table class="table table-striped">
                     <thead>

@@ -18,11 +18,11 @@
             </form>
         </main>
     </div>
-    <div th:if="${sceltaGenereFatta}" th:class="'assetBody ' + (${genere} == 'maschio' ? 'bg-maschio' : (${genere} == 'femmina' ? 'bg-femmina' : ''))">
+    <div th:if="${sceltaGenereFatta}" th:class="'assetBody ' + (${genere == 'maschio'} ? 'bg-maschio' : (${genere == 'femmina'} ? 'bg-femmina' : ''))">
         <main>
-            <div th:if="${nameChose} == null">
-                <h1 th:if="${genere} == 'maschio'">Benvenuto nel mondo dei supereroi ...</h1>
-                <h1 th:if="${genere} == 'femmina'">Benvenuta nel mondo delle principesse ...</h1>
+            <div th:if="${nameChose == null}">
+                <h1 th:if="${genere == 'maschio'}">Benvenuto nel mondo dei supereroi ...</h1>
+                <h1 th:if="${genere == 'femmina'}">Benvenuta nel mondo delle principesse ...</h1>
                 <div>
                     <div th:if="${errore}" class="alert alert-danger alert-dismissible fade show" role="alert">
                         <span th:text="${errore}"></span>
@@ -34,16 +34,16 @@
                     </form>
                 </div>
             </div>
-            <div th:if="${nameChose} != null">
-                <h1 th:if="${genere} == 'maschio'" th:text="'Benvenuto nel mondo dei supereroi ' + ${nameChose.name}"></h1>
-                <h1 th:if="${genere} == 'femmina'" th:text="'Benvenuta nel mondo delle principesse ' + ${nameChose.name}"></h1>
-                <div  th:if="!genitore.reveal">
+            <div th:if="${nameChose != null}">
+                <h1 th:if="${genere == 'maschio'}" th:text="'Benvenuto nel mondo dei supereroi ' + ${nameChose.name}"></h1>
+                <h1 th:if="${genere == 'femmina'}" th:text="'Benvenuta nel mondo delle principesse ' + ${nameChose.name}"></h1>
+                <div  th:if="${!genitore.reveal}">
                     <form th:action="@{/genitore/home/rivelaNome}" method="post" class="text-center mb-5">
                         <input type="hidden" name="id" th:value="${genitore.id}" />
                         <button type="submit" class="btn btn-primary" onclick="return confirm('Sei sicuro?')">Rivela Nome</button>
                     </form>
                 </div>
-                <div th:if="genitore.reveal"></div>
+                <div th:if="${genitore.reveal}"></div>
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -54,8 +54,8 @@
                     <tbody>
                         <tr th:each="parente : ${listaParenti}">
                             <td th:text="${parente.username}"></td>
-                            <td th:if="${parente.chose} == null"></td>
-                            <td th:if="${parente.chose} != null" th:text="${parente.chose.name}"></td>
+                            <td th:if="${parente.chose == null}"></td>
+                            <td th:if="${parente.chose != null}" th:text="${parente.chose.name}"></td>
                         </tr>
                     </tbody>
                 </table>

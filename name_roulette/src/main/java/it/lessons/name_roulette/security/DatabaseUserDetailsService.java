@@ -31,7 +31,7 @@ public class DatabaseUserDetailsService implements UserDetailsService{
         if(optUser.isPresent()) {
             return new DatabaseUserDetails(optUser.get());
         } else {
-            throw new UsernameNotFoundException("Email non trovata");
+            throw new UsernameNotFoundException("Username non trovato");
         }
     }
 

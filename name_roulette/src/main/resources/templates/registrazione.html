@@ -37,35 +37,39 @@
     <div class="assetBody">
         <main>
             <h2 class="mb-5 text-center">Registrazione</h2>
-                <form th:action="@{/registrati}" th:object="${user}" method="post" class="container mt-4 p-4">
+
+            <div th:if="${error}" class="alert alert-danger mb-3" role="alert">
+                <p th:text="${error}"></p>
+            </div>
+            <form th:action="@{/registrati}" th:object="${user}" method="post" class="container mt-4 p-4">
                 
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input type="text" th:field="*{username}" class="form-control" id="username" placeholder="Inserisci username">
-                    </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" th:field="*{username}" class="form-control" id="username" placeholder="Inserisci username">
+                </div>
                 
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="nome@example.com">
-                    </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="nome@example.com">
+                </div>
                 
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" th:field="*{password}" class="form-control" id="password" placeholder="Password">
-                    </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" th:field="*{password}" class="form-control" id="password" placeholder="Password">
+                </div>
                 
-                    <div class="mb-5">
-                        <label for="role" class="form-label">Ruolo</label>
-                        <select class="form-select" id="role" th:field="*{role.id}">
-                            <option value="" disabled selected>Seleziona il ruolo</option>
-                            <option th:each="r : ${role}" th:value="${r.id}" th:text="${r.name}"></option>
-                        </select>
-                    </div>
+                <div class="mb-5">
+                    <label for="role" class="form-label">Ruolo</label>
+                    <select class="form-select" id="role" th:field="*{role.id}">
+                        <option value="" disabled selected>Seleziona il ruolo</option>
+                        <option th:each="r : ${role}" th:value="${r.id}" th:text="${r.name}"></option>
+                    </select>
+                </div>
                 
-                    <div>
-                        <button type="submit" class="btn btn-primary" style="max-width: 100px;">Registrati</button>
-                    </div>
-                </form>
+                <div>
+                    <button type="submit" class="btn btn-primary" style="max-width: 100px;">Registrati</button>
+                </div>
+            </form>
         </main>
     </div>
 </body>
